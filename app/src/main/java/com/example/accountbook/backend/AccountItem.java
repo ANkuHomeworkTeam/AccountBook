@@ -20,6 +20,8 @@ public class AccountItem {
     public String   type;
     // 备注
     public String   info;
+
+    // 这个构造函数理论上应该由后端调用
     public AccountItem() {
         id          = -1;
         date        = new Date();
@@ -28,6 +30,7 @@ public class AccountItem {
         type        = "";
         info        = "";
     }
+    // 这个构造函数理论上应该由后端调用
     public AccountItem(int id, Date date, Double money, boolean isIncome, String type, String info) {
         this.id         = id;
         this.date       = date;
@@ -36,6 +39,8 @@ public class AccountItem {
         this.type       = type;
         this.info       = info;
     }
+    // 可能会有BUG
+    @Deprecated
     public AccountItem(Date date, Double money, boolean isIncome, String type, String info) {
         this.id         = -1;
         this.date       = date;
@@ -60,9 +65,11 @@ public class AccountItem {
     public String getInfo() {
         return info;
     }
+    // 这个账目是收入吗？
     public boolean isIncome() {
         return isIncome;
     }
+    // 这个账目是支出吗?
     public boolean isExpense() {
         return !isIncome;
     }
