@@ -9,7 +9,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-import com.example.accountbook.backend.AccountInquery;
+import com.example.accountbook.backend.AccountInquiry;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
         /** 初始化数据库
           + by hrl 1711326
          */
-        AccountInquery.init(MainActivity.this);
+        AccountInquiry.init(MainActivity.this);
 
         setContentView(R.layout.activity_main);
         BottomNavigationView navView = findViewById(R.id.nav_view);

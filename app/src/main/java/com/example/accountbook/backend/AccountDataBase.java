@@ -5,8 +5,11 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.security.keystore.KeyInfo;
 import android.util.Log;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class AccountDataBase extends SQLiteOpenHelper {
@@ -21,6 +24,10 @@ public class AccountDataBase extends SQLiteOpenHelper {
     static final String KEY_I_OR_E = "in_out";
     static final String KEY_TYPE = "type";
     static final String KEY_INFO = "info";
+
+    static String castWhereClause(String key) {
+        return key + "=?";
+    }
 
     // Constructor
     public AccountDataBase(Context context) {
@@ -64,4 +71,46 @@ public class AccountDataBase extends SQLiteOpenHelper {
         database.insert(TABLE_ACCOUNT_BOOK, null, values);
     }
 
+
+    public void modifyItem(int id, java.util.Date uDate, double money, boolean isIncome, String type, String info) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues v = new ContentValues();
+        java.sql.Date sDate = new java.sql.Date(uDate.getTime());
+        v.put(KEY_DATE, sDate.toString());
+        v.put(KEY_MONEY, money);
+        v.put(KEY_I_OR_E, isIncome? 1 : 0);
+        v.put(KEY_TYPE, type);
+        v.put(KEY_INFO, info);
+        db.update(TABLE_ACCOUNT_BOOK, v, castWhereClause(KEY_ID), new String[]{Integer.toString(id)});
+    }
+
+    public void deleteItem(int id) {
+        SQLiteDatabase db = getWritableDatabase();
+        db.delete(TABLE_ACCOUNT_BOOK, castWhereClause(KEY_ID), new String[] {
+                Integer.toString(id)
+        });
+    }
+
+    public ArrayList<AccountItem> inquiryItems(String section, String[] sectionArgs) {
+        SQLiteDatabase db = getWritableDatabase();
+        Cursor c = db.query(TABLE_ACCOUNT_BOOK, null, section, sectionArgs, null, null, KEY_DATE);
+        ArrayList<AccountItem> lists = new ArrayList<>();
+        do {
+            int id      = c.getInt(c.getColumnIndex(KEY_ID));
+            String dateStr = c.getString(c.getColumnIndex(KEY_DATE));
+            Date date;
+            try {
+                date = new SimpleDateFormat("yyyy-MM-dd").parse(dateStr);
+            } catch (Exception e) {
+                e.printStackTrace();
+                date = new Date();
+            }
+            double money = c.getDouble(c.getColumnIndex(KEY_MONEY));
+            boolean isIncome = c.getInt(c.getColumnIndex(KEY_I_OR_E)) == 1 ? true : false;
+            String type = c.getString(c.getColumnIndex(KEY_TYPE));
+            String info = c.getString(c.getColumnIndex(KEY_INFO));
+            lists.add(new AccountItem(id, date, money, isIncome, type, info));
+        } while (c.moveToNext());
+        return lists;
+    }
 }
