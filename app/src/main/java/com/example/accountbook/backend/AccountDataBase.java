@@ -23,10 +23,10 @@ public class AccountDataBase extends SQLiteOpenHelper {
         Log.d(" - DataBase", "Call onCreate");
         String sqlCreateScript = "CREATE TABLE IF NOT EXISTS account_book ( " +
                 "_id INTEGER PRIMARY KEY, " +  // _id   -> 主键
-                "date VARCHAR," +              // date  -> 日期
+                "date DATE," +              // date  -> 日期
                 "money DOUBLE," +              // money -> 收支
-                "in_out INTEGER," +            // in_out-> 收入或者支出类型
-                "tile VARCHAR," +              // tile  -> 类型
+                "in_out INTEGER," +            // in_out-> 收入或者支出类型 1是收入
+                "type VARCHAR," +              // tile  -> 类型
                 "info TEXT" +                  // 备注
                 ")";
         db.execSQL(sqlCreateScript);
@@ -35,7 +35,7 @@ public class AccountDataBase extends SQLiteOpenHelper {
     @Deprecated
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+        Log.d(" - DataBase", "Call Upgrade. It has not been implemented yet.");
     }
 
 }
