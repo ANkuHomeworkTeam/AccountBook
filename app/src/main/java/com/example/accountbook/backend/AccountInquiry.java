@@ -16,11 +16,11 @@ public class AccountInquiry {
     static public void insert(Date date, double money, boolean isIncome, String type, String info) {
         db.insertItem(date, money, isIncome, type, info);
     }
-    // 修改账单
+    // 修改账单, 根据id改
     static public void modify(int id, Date date, double money, boolean isIncome, String type, String info) {
         db.modifyItem(id, date, money, isIncome, type, info);
     }
-    // 删除账单
+    // 删除账单，根据id删
     static public void delete(int id) {
         db.deleteItem(id);
     }
