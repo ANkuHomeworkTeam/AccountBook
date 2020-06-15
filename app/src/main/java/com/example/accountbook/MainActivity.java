@@ -1,7 +1,10 @@
 package com.example.accountbook;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
+import com.example.accountbook.ui.Calculate;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,9 +13,10 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import com.example.accountbook.backend.AccountInquiry;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class MainActivity extends AppCompatActivity {
-
+    FloatingActionButton add_btn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +36,19 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
+
+        /**
+         * 悬浮按钮点击事件
+         * by gw 1711324
+         */
+        add_btn=(FloatingActionButton)findViewById(R.id.floatingActionButton);
+        add_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, Calculate.class);
+                startActivity(intent);
+            }
+        });
     }
 
 }
