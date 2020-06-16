@@ -118,19 +118,39 @@
                 <lecho.lib.hellocharts.view.LineChartView
                     android:id="@+id/chart_line_chart"
                     android:layout_width="match_parent"
-                    android:layout_height="200dp" />
-
-                <lecho.lib.hellocharts.view.PieChartView
-                    android:id="@+id/char_pie_chart_income"
-                    android:layout_width="match_parent"
                     android:layout_height="200dp"
-                    android:layout_marginTop="14dp" />
+                    android:paddingVertical="30dp" />
 
-                <lecho.lib.hellocharts.view.PieChartView
-                    android:id="@+id/char_pie_chart_expense"
+                <LinearLayout
+                    android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:layout_marginTop="14dp" />
+                    android:layout_height="wrap_content">
+                    <lecho.lib.hellocharts.view.PieChartView
+                        android:id="@+id/chart_pie_chart_income"
+                        android:layout_width="200dp"
+                        android:layout_height="200dp"
+                        android:layout_marginVertical="14dp" />
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:id="@+id/chart_pie_labels_income"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <lecho.lib.hellocharts.view.PieChartView
+                        android:id="@+id/chart_pie_chart_expense"
+                        android:layout_width="200dp"
+                        android:layout_height="200dp"
+                        android:layout_marginTop="14dp" />
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:id="@+id/chart_pie_labels_expense"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                </LinearLayout>
             </LinearLayout>
 
         </LinearLayout>
