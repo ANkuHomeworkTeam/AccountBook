@@ -96,7 +96,7 @@ public class Calculate extends AppCompatActivity {
         btn_more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(Calculate.this, classification.class);
+                Intent intent=new Intent(Calculate.this, Classification.class);
                 intent.putExtra("e_or_i",expend_or_income);
                 startActivityForResult(intent,1);
             }

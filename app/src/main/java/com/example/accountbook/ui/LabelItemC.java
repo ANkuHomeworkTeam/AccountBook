@@ -3,12 +3,12 @@
  */
 package com.example.accountbook.ui;
 
-public class label_item_c
+public class LabelItemC
 {
     public String label_name;
     public  int image_id;
     public Boolean expend_or_income;//expend:true
-    public label_item_c(String label_name,Boolean expend_or_income,int image_id)
+    public LabelItemC(String label_name, Boolean expend_or_income, int image_id)
     {
         this.label_name=label_name;
         this.image_id=image_id;

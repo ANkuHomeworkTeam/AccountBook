@@ -5,14 +5,11 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 import com.example.accountbook.R;
@@ -20,13 +17,13 @@ import com.example.accountbook.R;
 import java.util.List;
 
 
-public class recycleview_adapter extends RecyclerView.Adapter<recycleview_adapter.MyViewHolder> {
-    List<label_item_c> list;
+public class RecycleviewAdapter extends RecyclerView.Adapter<RecycleviewAdapter.MyViewHolder> {
+    List<LabelItemC> list;
     View inflater;
     Context context;
 
     //构造方法
-    public recycleview_adapter( Context context,List<label_item_c> list)
+    public RecycleviewAdapter(Context context, List<LabelItemC> list)
     {
         this.context=context;
         this.list=list;
@@ -53,7 +50,7 @@ public class recycleview_adapter extends RecyclerView.Adapter<recycleview_adapte
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
-        final label_item_c item=list.get(position);
+        final LabelItemC item=list.get(position);
         holder.textView.setText(item.getLabel_name());
         holder.imageView.setImageResource(item.image_id);
 

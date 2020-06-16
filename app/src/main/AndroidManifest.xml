@@ -12,7 +12,7 @@
         <activity android:name=".ui.Calculate"
             android:theme="@style/Theme.Design.NoActionBar"
             />
-        <activity android:name=".ui.classification"
+        <activity android:name=".ui.Classification"
             android:theme="@style/Theme.Design.NoActionBar"
             />
         <activity

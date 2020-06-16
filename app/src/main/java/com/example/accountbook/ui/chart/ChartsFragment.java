@@ -42,6 +42,9 @@ public class ChartsFragment extends Fragment {
     static final private int LINE_CHART_EXPENSE_COLOR = 0xffff6666;
     static final private int LINE_CHART_INCOME_COLOR = 0xff99cc99;
 
+    static final private int LINE_CHART_AXIS_X_COLOR = 0xff454545;
+    static final private int LINE_CHART_AXIS_Y_COLOR = 0xff454545;
+
     static final private ValueShape LINE_CHART_INCOME_DOT = ValueShape.DIAMOND;
     static final private ValueShape LINE_CHART_EXPENSE_DOT = ValueShape.SQUARE;
 
@@ -125,12 +128,21 @@ public class ChartsFragment extends Fragment {
         // configure chart
         // line chart
         final boolean lineChartHasLine = true;
+        final int     axisTextSize     = 12;
+        final boolean hasSplitLineX = true;
+        final boolean hasSplitLineY = true;
         incomeLine.setHasLines(lineChartHasLine);
         expenseLine.setHasLines(lineChartHasLine);
         incomeLine.setColor(LINE_CHART_INCOME_COLOR);
         expenseLine.setColor(LINE_CHART_EXPENSE_COLOR);
         incomeLine.setShape(LINE_CHART_INCOME_DOT);
         expenseLine.setShape(LINE_CHART_EXPENSE_DOT);
+        axisX.setTextSize(axisTextSize);
+        axisY.setTextSize(axisTextSize);
+        axisX.setTextColor(LINE_CHART_AXIS_X_COLOR);
+        axisY.setTextColor(LINE_CHART_AXIS_Y_COLOR);
+        axisX.setHasLines(hasSplitLineX);
+        axisY.setHasLines(hasSplitLineY);
 
 
         // pie chart
@@ -214,6 +226,8 @@ public class ChartsFragment extends Fragment {
         lines.add(incomeLine);
         lines.add(expenseLine);
         lineChartData.setLines(lines);
+        lineChartData.setAxisXBottom(axisX);
+        lineChartData.setAxisYLeft(axisY);
         lineChartView.setLineChartData(lineChartData);
     }
 
