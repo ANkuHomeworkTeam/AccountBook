@@ -1,3 +1,8 @@
+/**
+ * 数据库操作
+ * 1711326 hrl
+ */
+
 package com.example.accountbook.backend;
 
 import android.content.ContentValues;
