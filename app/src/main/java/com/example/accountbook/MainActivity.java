@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
         /** 初始化数据库
           + by hrl 1711326
          */
-        AccountInquiry.init(MainActivity.this);
+        AccountInquiry accountInquiry = new AccountInquiry(MainActivity.this);
 
         setContentView(R.layout.activity_main);
         BottomNavigationView navView = findViewById(R.id.nav_view);
