@@ -23,6 +23,15 @@ public class ChartsFragment extends Fragment {
         chartsViewModel =
                 ViewModelProviders.of(this).get(ChartsViewModel.class);
         View root = inflater.inflate(R.layout.fragment_charts, container, false);
+        /**
+        final TextView textView = root.findViewById(R.id.text_notifications);
+        chartsViewModel.getText().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(@Nullable String s) {
+                textView.setText(s);
+            }
+        });
+         */
         return root;
     }
 }
