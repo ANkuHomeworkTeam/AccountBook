@@ -14,9 +14,12 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.example.accountbook.R;
 
+import lecho.lib.hellocharts.view.LineChartView;
+
 public class ChartsFragment extends Fragment {
 
     private ChartsViewModel chartsViewModel;
+    private LineChartView lineChartView;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -32,6 +35,7 @@ public class ChartsFragment extends Fragment {
             }
         });
          */
+
         return root;
     }
 }

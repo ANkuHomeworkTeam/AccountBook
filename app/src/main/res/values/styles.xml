@@ -14,7 +14,9 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
-    <style name="MyCheckBox" parent="@android:style/Widget.CompoundButton.CheckBox">
-        <item name="android:button">@drawable/checkbox_selector</item>
+
+    
+    <style name="chartToggleButton" parent="Theme.AppCompat.Light.DarkActionBar">
+
     </style>
 </resources>

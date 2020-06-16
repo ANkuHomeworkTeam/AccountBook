@@ -38,6 +38,30 @@ public class Calculate extends AppCompatActivity {
         btn_none=(Button)findViewById(R.id.btn_none);
         edit_money_color=(EditText) findViewById(R.id.et_money);
         money_sign_color=(TextView)findViewById(R.id.tv_y);
+
+        Intent intent=getIntent();
+        if(intent.getIntExtra("type",0)==1)
+        {
+            String expend_label=intent.getStringExtra("expend");
+            money_sign_color.setTextColor(Color.parseColor("#333333"));
+            edit_money_color.setHintTextColor(Color.parseColor("#333333"));
+            edit_money_color.setTextColor(Color.parseColor("#333333"));
+            expend_or_income=true;
+            btn_expend.setTextColor(Color.parseColor("#008577"));
+            btn_income.setTextColor(Color.parseColor("#000000"));
+            btn_none.setText(expend_label);
+        }
+        if(intent.getIntExtra("type",0)==2)
+        {
+            String expend_label=intent.getStringExtra("expend");
+            money_sign_color.setTextColor(Color.parseColor("#FF0000"));
+            edit_money_color.setHintTextColor(Color.parseColor("#FF0000"));
+            edit_money_color.setTextColor(Color.parseColor("#FF0000"));
+            expend_or_income=false;
+            btn_expend.setTextColor(Color.parseColor("#000000"));
+            btn_income.setTextColor(Color.parseColor("#008577"));
+            btn_none.setText(expend_label);
+        }
         btn_return.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

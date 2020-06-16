@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -48,13 +49,45 @@ public class classification extends AppCompatActivity {
         expend_list.add(terr3);
         expend_list.add(terr4);
         expend_list.add(terr5);
+        label_item_c i_terr1=new label_item_c("工作",true,R.drawable.work);
+        label_item_c i_terr2=new label_item_c("兼职",true,R.drawable.jianzhi);
+        label_item_c i_terr3=new label_item_c("理财",true,R.drawable.licai);
+        label_item_c i_terr4=new label_item_c("礼金",true,R.drawable.lijin);
+        label_item_c i_terr5=new label_item_c("其他",true,R.drawable.qita);
+        income_list.add(i_terr1);
+        income_list.add(i_terr2);
+        income_list.add(i_terr3);
+        income_list.add(i_terr4);
+        income_list.add(i_terr5);
         LinearLayoutManager layoutManager= new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         if(expend_or_spend)
-            adapter=new recycleview_adapter(expend_list);
+            adapter=new recycleview_adapter(this,expend_list);
         else
-            adapter=new recycleview_adapter(income_list);
+            adapter=new recycleview_adapter(this,income_list);
         recyclerView.setAdapter(adapter);
+
+
+        adapter.setOnItemClickListener(new recycleview_adapter.ItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                if(expend_or_spend)
+                {
+                    Intent intent=new Intent(classification.this,Calculate.class);
+                    intent.putExtra("expend",expend_list.get(position).label_name);
+                    intent.putExtra("type",1);
+                    startActivity(intent);
+                }
+                else
+                {
+                    Intent intent=new Intent(classification.this,Calculate.class);
+                    intent.putExtra("expend",income_list.get(position).label_name);
+                    intent.putExtra("type",2);
+                    startActivity(intent);
+                }
+
+            }
+        });
 
         but_return.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,5 +96,6 @@ public class classification extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
     }
 }
