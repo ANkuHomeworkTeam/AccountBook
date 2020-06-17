@@ -24,12 +24,12 @@ public class AccountDataBase extends SQLiteOpenHelper {
 
     static final String TABLE_ACCOUNT_BOOK = "account_book";
 
-    static final String KEY_ID = "_id";
-    static final String KEY_DATE = "date";
-    static final String KEY_MONEY = "money";
-    static final String KEY_I_OR_E = "in_out";
-    static final String KEY_TYPE = "type";
-    static final String KEY_INFO = "info";
+    static final public String KEY_ID = "_id";
+    static final public String KEY_DATE = "date";
+    static final public String KEY_MONEY = "money";
+    static final public String KEY_I_OR_E = "in_out";
+    static final public String KEY_TYPE = "type";
+    static final public String KEY_INFO = "info";
 
     static String castWhereClause(String key) {
         return key + "=?";
@@ -141,21 +141,35 @@ public class AccountDataBase extends SQLiteOpenHelper {
         return money;
     }
 
-    public double inquirySumOnType(java.util.Date dateBegin, java.util.Date dateEnd, boolean isIncome, String type) {
+    public List<AccountItem> inquirySumAllType(java.util.Date dateBegin, java.util.Date dateEnd, boolean isIncome) {
         SQLiteDatabase db = getWritableDatabase();
-        String[] columns = new String[]{ "SUM(" + KEY_MONEY + ") as SumMoney" };
+        String[] columns = new String[]{
+                KEY_TYPE,
+                "SUM(" + KEY_MONEY + ") as SumMoney"
+        };
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String dateBeginStr = dateFormat.format(dateBegin);
         String dateEndStr = dateFormat.format(dateEnd);
-        double money = 0;
+        String[] sectionArgs = new String[] {
+                dateBeginStr,
+                dateEndStr,
+                isIncome? "1" : "0"
+        };
         Cursor c = db.query(TABLE_ACCOUNT_BOOK,
                 columns,
-                KEY_DATE + ">? AND " + KEY_DATE + "<? AND" + KEY_TYPE + "=?",
+                KEY_DATE + ">? AND " + KEY_DATE + "<? AND" + KEY_I_OR_E + "=?",
+                sectionArgs,
+                KEY_TYPE,
                 null,
-                null,
-                null,
-                null,
-                null);
+                KEY_DATE);
+        List<AccountItem> items = new ArrayList<>();
+        while(c.moveToNext()) {
+            String type = c.getString(c.getColumnIndex(KEY_TYPE));
+            double money = c.getDouble(c.getColumnIndex("SumMoney"));
+            items.add(new AccountItem(0, null,money, isIncome, type, ""));
+        }
+        c.close();
+        return items;
     }
 
 }

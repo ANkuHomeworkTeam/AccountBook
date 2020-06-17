@@ -3,8 +3,10 @@ package com.example.accountbook.backend;
 import android.content.Context;
 import android.util.Log;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class AccountInquiry {
     private AccountDataBase db;
@@ -35,6 +37,16 @@ public class AccountInquiry {
     public ArrayList<AccountItem> inquiryAll(String section, String[] sectionArgs) {
         return db.inquiryItems(section, sectionArgs);
     }
+    public ArrayList<AccountItem> inquiryBetweenDate (Date begin, Date end) {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        String beginDateStr = format.format(begin);
+        String endDateStr   = format.format(end);
+        return db.inquiryItems(db.KEY_DATE + ">? AND " + db.KEY_DATE + "<?",
+                new String[]{
+                        beginDateStr,
+                        endDateStr
+                });
+    }
 
     public double inquiryIncomeSumOnDate(Date date) {
         return db.inquirySumOnDate(date, true);
@@ -42,6 +54,14 @@ public class AccountInquiry {
 
     public double inquiryExpenseSumOnDate(Date date) {
         return db.inquirySumOnDate(date, false);
+    }
+
+    public List<AccountItem> inquiryIncomeSumOnTypeBetweenDate(Date dateBegin, Date dateEnd) {
+        return db.inquirySumAllType(dateBegin, dateEnd, true);
+    }
+
+    public List<AccountItem> inquiryExpenseSumOnTypeBetweenDate(Date dateBegin, Date dateEnd) {
+        return db.inquirySumAllType(dateBegin, dateEnd, false);
     }
 
 }
