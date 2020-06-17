@@ -23,6 +23,7 @@ public class Calculate extends AppCompatActivity {
     Button btn_income;
     Button btn_more;
     Button btn_none;
+    Button btn_save;
     EditText edit_money_color;
     TextView money_sign_color;
     boolean expend_or_income;//expend为true，income为false
@@ -36,6 +37,7 @@ public class Calculate extends AppCompatActivity {
         btn_income=(Button)findViewById(R.id.btn_account_income);
         btn_more=(Button)findViewById(R.id.btn_more);
         btn_none=(Button)findViewById(R.id.btn_none);
+        btn_save=(Button)findViewById(R.id.btn_save);
         edit_money_color=(EditText) findViewById(R.id.et_money);
         money_sign_color=(TextView)findViewById(R.id.tv_y);
 
@@ -99,6 +101,12 @@ public class Calculate extends AppCompatActivity {
                 Intent intent=new Intent(Calculate.this, Classification.class);
                 intent.putExtra("e_or_i",expend_or_income);
                 startActivityForResult(intent,1);
+            }
+        });
+        btn_save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
             }
         });
     }

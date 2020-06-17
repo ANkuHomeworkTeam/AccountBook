@@ -15,6 +15,8 @@ import androidx.navigation.ui.NavigationUI;
 import com.example.accountbook.backend.AccountInquiry;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.Date;
+
 public class MainActivity extends AppCompatActivity {
     FloatingActionButton add_btn;
     @Override
@@ -25,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
           + by hrl 1711326
          */
         AccountInquiry accountInquiry = new AccountInquiry(MainActivity.this);
+
 
         setContentView(R.layout.activity_main);
         BottomNavigationView navView = findViewById(R.id.nav_view);
