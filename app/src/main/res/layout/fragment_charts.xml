@@ -129,9 +129,11 @@
                         android:id="@+id/chart_pie_chart_income"
                         android:layout_width="200dp"
                         android:layout_height="200dp"
+                        android:layout_weight="1"
                         android:layout_marginVertical="14dp" />
                     <LinearLayout
                         android:orientation="vertical"
+                        android:layout_weight="3"
                         android:id="@+id/chart_pie_labels_income"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
@@ -144,8 +146,10 @@
                         android:id="@+id/chart_pie_chart_expense"
                         android:layout_width="200dp"
                         android:layout_height="200dp"
+                        android:layout_weight="1"
                         android:layout_marginTop="14dp" />
                     <LinearLayout
+                        android:layout_weight="3"
                         android:orientation="vertical"
                         android:id="@+id/chart_pie_labels_expense"
                         android:layout_width="wrap_content"

@@ -1,28 +1,34 @@
 package com.example.accountbook.ui.chart;
 
 import android.graphics.Color;
+import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.example.accountbook.R;
+import com.example.accountbook.backend.AccountInquiry;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import lecho.lib.hellocharts.model.Axis;
+import lecho.lib.hellocharts.model.AxisValue;
 import lecho.lib.hellocharts.model.Line;
 import lecho.lib.hellocharts.model.LineChartData;
 import lecho.lib.hellocharts.model.PieChartData;
-import lecho.lib.hellocharts.model.SliceValue;
+import lecho.lib.hellocharts.model.PointValue;
 import lecho.lib.hellocharts.model.ValueShape;
+import lecho.lib.hellocharts.model.Viewport;
 import lecho.lib.hellocharts.view.LineChartView;
 import lecho.lib.hellocharts.view.PieChartView;
 
@@ -34,16 +40,25 @@ public class ChartsFragment extends Fragment {
     private LineChartData lineChartData;
     private Line incomeLine;
     private Line expenseLine;
+    private Line placeholderLine;
     private Axis axisX;
     private Axis axisY;
     private PieChartData pieChartIncomeData;
     private PieChartData pieChartExpenseData;
+
+    private LinearLayout incomeLabelWrapper;
+    private LinearLayout expenseLabelWrapper;
+
+    private AccountInquiry inquiry;
 
     static final private int LINE_CHART_EXPENSE_COLOR = 0xffff6666;
     static final private int LINE_CHART_INCOME_COLOR = 0xff99cc99;
 
     static final private int LINE_CHART_AXIS_X_COLOR = 0xff454545;
     static final private int LINE_CHART_AXIS_Y_COLOR = 0xff454545;
+
+    static final private String LINE_CHART_AXIS_X_TEXT = "时间";
+    static final private String LINE_CHART_AXIS_Y_TEXT = "收入/支出";
 
     static final private ValueShape LINE_CHART_INCOME_DOT = ValueShape.DIAMOND;
     static final private ValueShape LINE_CHART_EXPENSE_DOT = ValueShape.SQUARE;
@@ -97,6 +112,9 @@ public class ChartsFragment extends Fragment {
 
         View view = root;
 
+        // init database
+        inquiry = new AccountInquiry(this.getActivity());
+
         // init chart status
         chartStatus = CHART_ON_UNDEFINED;
 
@@ -111,6 +129,18 @@ public class ChartsFragment extends Fragment {
         expenseLine             = new Line();
         axisX                   = new Axis();
         axisY                   = new Axis();
+        placeholderLine = new Line();
+        placeholderLine.setHasLines(false);
+        placeholderLine.setHasLabels(false);
+        placeholderLine.setHasPoints(false);
+        List<PointValue> placeholderValue = new ArrayList<>();
+        placeholderValue.add(new PointValue(1, 0));
+        placeholderValue.add(new PointValue(2, 1));
+        placeholderLine.setValues(placeholderValue);
+
+        // init layout
+        incomeLabelWrapper      = view.findViewById(R.id.chart_pie_labels_income);
+        expenseLabelWrapper     = view.findViewById(R.id.chart_pie_labels_expense);
 
         // init button
         buttonSwitchToMonth     = view.findViewById(R.id.chart_toggle_button_month);
@@ -143,7 +173,8 @@ public class ChartsFragment extends Fragment {
         axisY.setTextColor(LINE_CHART_AXIS_Y_COLOR);
         axisX.setHasLines(hasSplitLineX);
         axisY.setHasLines(hasSplitLineY);
-
+        axisX.setName(LINE_CHART_AXIS_X_TEXT);
+        axisY.setName(LINE_CHART_AXIS_Y_TEXT);
 
         // pie chart
         final boolean pieChartHasCenterCircle         = true;
@@ -192,6 +223,8 @@ public class ChartsFragment extends Fragment {
         });
 
 
+
+
         // init data
         switchTo(CHART_ON_MONTH);
 
@@ -222,9 +255,11 @@ public class ChartsFragment extends Fragment {
         incomeSumDisplay.setText(Double.toString(income));
         expenseSumDisplay.setText(Double.toString(expense));
 
+
         List<Line> lines = new ArrayList<>();
         lines.add(incomeLine);
         lines.add(expenseLine);
+        lines.add(placeholderLine);
         lineChartData.setLines(lines);
         lineChartData.setAxisXBottom(axisX);
         lineChartData.setAxisYLeft(axisY);
@@ -232,6 +267,22 @@ public class ChartsFragment extends Fragment {
     }
 
     private void switchToMonth() {
+        // 求出最近30天
+        Calendar today = Calendar.getInstance();
+        Date[] days = new Date[30];
+        for (int i = 29; i>=0; i--) {
+            days[i] = today.getTime();
+            today.add(Calendar.DATE, -1);
+        }
+
+        List<AxisValue> axisXLabels = new ArrayList<>();
+        for(int i = 0; i< 5; i++) {
+            axisXLabels.add(new AxisValue(i).setLabel(Integer.toString(i)));
+        }
+        axisX.setValues(axisXLabels);
+        List<PointValue> points = new ArrayList<>();
+        points.add(new PointValue(2, 24));
+        incomeLine.setValues(points);
 
     }
 

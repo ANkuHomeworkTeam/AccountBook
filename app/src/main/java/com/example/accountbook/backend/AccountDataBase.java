@@ -111,11 +111,12 @@ public class AccountDataBase extends SQLiteOpenHelper {
                 date = new Date();
             }
             double money = c.getDouble(c.getColumnIndex(KEY_MONEY));
-            boolean isIncome = c.getInt(c.getColumnIndex(KEY_I_OR_E)) == 1 ? true : false;
+            boolean isIncome = c.getInt(c.getColumnIndex(KEY_I_OR_E)) == 1;
             String type = c.getString(c.getColumnIndex(KEY_TYPE));
             String info = c.getString(c.getColumnIndex(KEY_INFO));
             lists.add(new AccountItem(id, date, money, isIncome, type, info));
         } while (c.moveToNext());
+        c.close();
         return lists;
     }
 }
