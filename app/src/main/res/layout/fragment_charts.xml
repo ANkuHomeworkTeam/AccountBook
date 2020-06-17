@@ -134,9 +134,11 @@
                     <LinearLayout
                         android:orientation="vertical"
                         android:layout_weight="3"
+                        android:gravity="center"
+                        android:paddingHorizontal="20dp"
                         android:id="@+id/chart_pie_labels_income"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="match_parent"/>
                 </LinearLayout>
                 <LinearLayout
                     android:orientation="horizontal"
@@ -151,9 +153,11 @@
                     <LinearLayout
                         android:layout_weight="3"
                         android:orientation="vertical"
+                        android:gravity="center"
+                        android:paddingHorizontal="20dp"
                         android:id="@+id/chart_pie_labels_expense"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="match_parent"/>
                 </LinearLayout>
             </LinearLayout>
 

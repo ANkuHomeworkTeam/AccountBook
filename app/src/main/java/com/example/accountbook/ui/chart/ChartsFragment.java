@@ -29,8 +29,11 @@ import lecho.lib.hellocharts.model.Line;
 import lecho.lib.hellocharts.model.LineChartData;
 import lecho.lib.hellocharts.model.PieChartData;
 import lecho.lib.hellocharts.model.PointValue;
+import lecho.lib.hellocharts.model.SliceValue;
 import lecho.lib.hellocharts.model.ValueShape;
 import lecho.lib.hellocharts.model.Viewport;
+import lecho.lib.hellocharts.util.ChartUtils;
+import lecho.lib.hellocharts.view.Chart;
 import lecho.lib.hellocharts.view.LineChartView;
 import lecho.lib.hellocharts.view.PieChartView;
 
@@ -140,6 +143,9 @@ public class ChartsFragment extends Fragment {
         placeholderValue.add(new PointValue(2, 1));
         placeholderLine.setValues(placeholderValue);
 
+        incomeLabelWrapper = view.findViewById(R.id.chart_pie_labels_income);
+        expenseLabelWrapper = view.findViewById(R.id.chart_pie_labels_expense);
+
         // init layout
         incomeLabelWrapper      = view.findViewById(R.id.chart_pie_labels_income);
         expenseLabelWrapper     = view.findViewById(R.id.chart_pie_labels_expense);
@@ -227,17 +233,44 @@ public class ChartsFragment extends Fragment {
             }
         });
 
-        // inquiry.insert(new Date(), 1000, true, AccountItem.TYPE_CONSUME, "gggg");
-
         // init data
         switchTo(CHART_ON_MONTH);
 
         // \
         return root;
     }
+
+    private LinearLayout getPieChartLabel(String label, int color) {
+        LinearLayout wrapper = new LinearLayout(this.getActivity());
+        wrapper.setOrientation(LinearLayout.HORIZONTAL);
+        TextView l1 = new TextView(this.getActivity());
+        TextView l2 = new TextView(this.getActivity());
+        l1.setText("  ◼ ");
+        l1.setTextColor(color);
+        l2.setText(label);
+        l2.setTextColor(0xff333333);
+        wrapper.addView(l1);
+        wrapper.addView(l2);
+        return wrapper;
+    }
+
+    private void addIncomePieChartLabel(String label, int color) {
+        incomeLabelWrapper.addView(getPieChartLabel(label, color));
+    }
+
+    private void addExpensePieChartLabel(String label, int color) {
+        expenseLabelWrapper.addView(getPieChartLabel(label, color));
+    }
+
+    private void clearPieChartLabel() {
+        incomeLabelWrapper.removeAllViewsInLayout();
+        expenseLabelWrapper.removeAllViewsInLayout();
+    }
+
     private void switchTo(int status) {
         expense = 0;
         income = 0;
+        clearPieChartLabel();
         buttonSwitchToMonth.setTextColor(statusInactiveColor);
         buttonSwitchToSeason.setTextColor(statusInactiveColor);
         buttonSwitchToYear.setTextColor(statusInactiveColor);
@@ -271,6 +304,9 @@ public class ChartsFragment extends Fragment {
         lineChartData.setAxisXBottom(axisX);
         lineChartData.setAxisYLeft(axisY);
         lineChartView.setLineChartData(lineChartData);
+
+        pieChartViewIncome.setPieChartData(pieChartIncomeData);
+        pieChartViewExpense.setPieChartData(pieChartExpenseData);
     }
 
     private void switchToMonth() {
@@ -303,11 +339,35 @@ public class ChartsFragment extends Fragment {
         // 设置饼图
         List<AccountItem> incomeWithType = inquiry.inquiryIncomeSumOnTypeBetweenDate(days[0], days[29]);
         List<AccountItem> expenseWithType = inquiry.inquiryExpenseSumOnTypeBetweenDate(days[0], days[29]);
-        Log.e("fuck", incomeWithType.size() + "");
+
+        List<SliceValue> incomePieChartValue = new ArrayList<>();
+        List<SliceValue> expensePieChartValue = new ArrayList<>();
+
+        for (int i=0; i < incomeWithType.size(); i++) {
+            int labelColor = ChartUtils.nextColor();
+            // ChartUtils.nextColor();
+            SliceValue incomeValue = new SliceValue((float)incomeWithType.get(i).money, labelColor);
+            String incomeType = incomeWithType.get(i).getType();
+            incomeValue.setLabel(incomeType);
+            incomePieChartValue.add(incomeValue);
+            addIncomePieChartLabel(incomeType, labelColor);
+        }
+
+        for (int i=0; i < expenseWithType.size(); i++) {
+            int labelColor = ChartUtils.nextColor();
+            SliceValue expenseValue = new SliceValue((float)expenseWithType.get(i).money, labelColor);
+            String expenseType = expenseWithType.get(i).getType();
+            expenseValue.setLabel(expenseType);
+            expensePieChartValue.add(expenseValue);
+            addExpensePieChartLabel(expenseType, labelColor);
+        }
 
         axisX.setValues(axisXLabels);
         incomeLine.setValues(incomePoints);
         expenseLine.setValues(expensePoints);
+
+        pieChartIncomeData.setValues(incomePieChartValue);
+        pieChartExpenseData.setValues(expensePieChartValue);
     }
 
     private void switchToSeason() {

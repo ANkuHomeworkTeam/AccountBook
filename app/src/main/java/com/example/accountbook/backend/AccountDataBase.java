@@ -161,8 +161,9 @@ public class AccountDataBase extends SQLiteOpenHelper {
                 sectionArgs,
                 KEY_TYPE,
                 null,
-                KEY_DATE);
+                null);
         List<AccountItem> items = new ArrayList<>();
+
         while(c.moveToNext()) {
             String type = c.getString(c.getColumnIndex(KEY_TYPE));
             double money = c.getDouble(c.getColumnIndex("SumMoney"));
