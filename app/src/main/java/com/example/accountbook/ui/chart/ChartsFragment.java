@@ -54,6 +54,9 @@ public class ChartsFragment extends Fragment {
     private LinearLayout incomeLabelWrapper;
     private LinearLayout expenseLabelWrapper;
 
+    private TextView incomeLineLabel;
+    private TextView expenseLineLabel;
+
     private AccountInquiry inquiry;
 
     static final private int LINE_CHART_EXPENSE_COLOR = 0xffff6666;
@@ -143,6 +146,9 @@ public class ChartsFragment extends Fragment {
         placeholderValue.add(new PointValue(2, 1));
         placeholderLine.setValues(placeholderValue);
 
+        incomeLineLabel = view.findViewById(R.id.chart_line_label_income);
+        expenseLineLabel = view.findViewById(R.id.chart_line_label_expense);
+
         incomeLabelWrapper = view.findViewById(R.id.chart_pie_labels_income);
         expenseLabelWrapper = view.findViewById(R.id.chart_pie_labels_expense);
 
@@ -186,6 +192,8 @@ public class ChartsFragment extends Fragment {
         axisY.setHasLines(hasSplitLineY);
         axisX.setName(LINE_CHART_AXIS_X_TEXT);
         axisY.setName(LINE_CHART_AXIS_Y_TEXT);
+        incomeLineLabel.setTextColor(LINE_CHART_INCOME_COLOR);
+        expenseLineLabel.setTextColor(LINE_CHART_EXPENSE_COLOR);
 
         // pie chart
         final boolean pieChartHasCenterCircle         = true;
@@ -371,11 +379,131 @@ public class ChartsFragment extends Fragment {
     }
 
     private void switchToSeason() {
+        List<AxisValue> axisXLabels = new ArrayList<>();
+        List<PointValue> incomePoints = new ArrayList<>();
+        List<PointValue> expensePoints = new ArrayList<>();
+        SimpleDateFormat monthFormat = new SimpleDateFormat("MM");
 
+        Calendar cal = Calendar.getInstance();
+        Date[]   begins = new Date[3];
+        Date[]   ends   = new Date[3];
+        for (int i=2; i>=0; i--) {
+            cal.set(Calendar.DAY_OF_MONTH, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
+            ends[i] =  cal.getTime();
+            cal.set(Calendar.DAY_OF_MONTH, 1);
+            begins[i] = cal.getTime();
+            cal.add(Calendar.MONTH, -1);
+        }
+        // 设置折线图
+        for (int i=0; i<3; i++) {
+            AxisValue label = new AxisValue(i);
+            label.setLabel(Integer.valueOf(monthFormat.format(begins[i])) + "月");
+            axisXLabels.add(label);
+            double incomeMoney = inquiry.inquiryIncomeSumBetweenDate(begins[i], ends[i]);
+            double expenseMoney = inquiry.inquiryExpenseSumBetweenDate(begins[i], ends[i]);
+            PointValue incomePoint = new PointValue(i, (float)incomeMoney);
+            PointValue expensePoint = new PointValue(i, (float)expenseMoney);
+            incomePoints.add(incomePoint);
+            expensePoints.add(expensePoint);
+            expense += expenseMoney;
+            income += incomeMoney;
+        }
+
+        List<AccountItem> incomeWithType = inquiry.inquiryIncomeSumOnTypeBetweenDate(begins[0], ends[2]);
+        List<AccountItem> expenseWithType = inquiry.inquiryExpenseSumOnTypeBetweenDate(begins[0], ends[2]);
+
+        List<SliceValue> incomePieChartValue = new ArrayList<>();
+        List<SliceValue> expensePieChartValue = new ArrayList<>();
+
+        for (int i=0; i < incomeWithType.size(); i++) {
+            int labelColor = ChartUtils.nextColor();
+            // ChartUtils.nextColor();
+            SliceValue incomeValue = new SliceValue((float)incomeWithType.get(i).money, labelColor);
+            String incomeType = incomeWithType.get(i).getType();
+            incomeValue.setLabel(incomeType);
+            incomePieChartValue.add(incomeValue);
+            addIncomePieChartLabel(incomeType, labelColor);
+        }
+
+        for (int i=0; i < expenseWithType.size(); i++) {
+            int labelColor = ChartUtils.nextColor();
+            SliceValue expenseValue = new SliceValue((float)expenseWithType.get(i).money, labelColor);
+            String expenseType = expenseWithType.get(i).getType();
+            expenseValue.setLabel(expenseType);
+            expensePieChartValue.add(expenseValue);
+            addExpensePieChartLabel(expenseType, labelColor);
+        }
+
+        axisX.setValues(axisXLabels);
+        incomeLine.setValues(incomePoints);
+        expenseLine.setValues(expensePoints);
+
+        pieChartIncomeData.setValues(incomePieChartValue);
+        pieChartExpenseData.setValues(expensePieChartValue);
     }
 
     private void switchToYear() {
+        List<AxisValue> axisXLabels = new ArrayList<>();
+        List<PointValue> incomePoints = new ArrayList<>();
+        List<PointValue> expensePoints = new ArrayList<>();
+        SimpleDateFormat monthFormat = new SimpleDateFormat("MM");
 
+        Calendar cal = Calendar.getInstance();
+        Date[]   begins = new Date[12];
+        Date[]   ends   = new Date[12];
+        for (int i=11; i>=0; i--) {
+            cal.set(Calendar.DAY_OF_MONTH, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
+            ends[i] =  cal.getTime();
+            cal.set(Calendar.DAY_OF_MONTH, 1);
+            begins[i] = cal.getTime();
+            cal.add(Calendar.MONTH, -1);
+        }
+        // 设置折线图
+        for (int i=0; i<12; i++) {
+            AxisValue label = new AxisValue(i);
+            label.setLabel(Integer.valueOf(monthFormat.format(begins[i])) + "月");
+            axisXLabels.add(label);
+            double incomeMoney = inquiry.inquiryIncomeSumBetweenDate(begins[i], ends[i]);
+            double expenseMoney = inquiry.inquiryExpenseSumBetweenDate(begins[i], ends[i]);
+            PointValue incomePoint = new PointValue(i, (float)incomeMoney);
+            PointValue expensePoint = new PointValue(i, (float)expenseMoney);
+            incomePoints.add(incomePoint);
+            expensePoints.add(expensePoint);
+            expense += expenseMoney;
+            income += incomeMoney;
+        }
+
+        List<AccountItem> incomeWithType = inquiry.inquiryIncomeSumOnTypeBetweenDate(begins[0], ends[11]);
+        List<AccountItem> expenseWithType = inquiry.inquiryExpenseSumOnTypeBetweenDate(begins[0], ends[11]);
+
+        List<SliceValue> incomePieChartValue = new ArrayList<>();
+        List<SliceValue> expensePieChartValue = new ArrayList<>();
+
+        for (int i=0; i < incomeWithType.size(); i++) {
+            int labelColor = ChartUtils.nextColor();
+            // ChartUtils.nextColor();
+            SliceValue incomeValue = new SliceValue((float)incomeWithType.get(i).money, labelColor);
+            String incomeType = incomeWithType.get(i).getType();
+            incomeValue.setLabel(incomeType);
+            incomePieChartValue.add(incomeValue);
+            addIncomePieChartLabel(incomeType, labelColor);
+        }
+
+        for (int i=0; i < expenseWithType.size(); i++) {
+            int labelColor = ChartUtils.nextColor();
+            SliceValue expenseValue = new SliceValue((float)expenseWithType.get(i).money, labelColor);
+            String expenseType = expenseWithType.get(i).getType();
+            expenseValue.setLabel(expenseType);
+            expensePieChartValue.add(expenseValue);
+            addExpensePieChartLabel(expenseType, labelColor);
+        }
+
+        axisX.setValues(axisXLabels);
+        incomeLine.setValues(incomePoints);
+        expenseLine.setValues(expensePoints);
+
+        pieChartIncomeData.setValues(incomePieChartValue);
+        pieChartExpenseData.setValues(expensePieChartValue);
     }
 
 }

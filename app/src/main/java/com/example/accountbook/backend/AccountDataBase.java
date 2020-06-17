@@ -141,6 +141,29 @@ public class AccountDataBase extends SQLiteOpenHelper {
         return money;
     }
 
+    public double inquirySumBetweenDate(java.util.Date dateBegin, java.util.Date dateEnd, boolean isIncome) {
+        SQLiteDatabase db = getWritableDatabase();
+        String[] columns = new String[]{ "SUM(" + KEY_MONEY + ") as SumMoney" };
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        String dateBeginStr = format.format(dateBegin);
+        String dateEndStr = format.format(dateEnd);
+        double money = 0;
+        Cursor c = db.query(TABLE_ACCOUNT_BOOK,
+                columns,
+                KEY_DATE+">=? AND " + KEY_DATE + " <=? AND " +KEY_I_OR_E+"=?",
+                new String[]{dateBeginStr, dateEndStr, isIncome ? "1" : "0"},
+                KEY_DATE,
+                null,
+                null);
+        while (c.moveToNext()) {
+            money = c.getDouble(c.getColumnIndex("SumMoney"));
+            Log.e(" - DataBase ", "money is " + money);
+        }
+        c.close();
+        return money;
+    }
+
+
     public List<AccountItem> inquirySumAllType(java.util.Date dateBegin, java.util.Date dateEnd, boolean isIncome) {
         SQLiteDatabase db = getWritableDatabase();
         String[] columns = new String[]{
