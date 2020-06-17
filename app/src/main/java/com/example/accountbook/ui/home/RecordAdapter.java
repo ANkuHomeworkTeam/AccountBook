@@ -1,6 +1,7 @@
 package com.example.accountbook.ui.home;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,7 +39,10 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.MyViewHold
         holder.textView_type.setText(item.getType());
         holder.textView_money.setText(item.getMoney());
         holder.textView_e_or_i.setText(item.getExpend_or_income());
-
+        if(item.getExpend_or_income()=="收入")
+            holder.textView_money.setTextColor(Color.parseColor("#ff0000"));
+        else if(item.getExpend_or_income()=="支出")
+            holder.textView_money.setTextColor(Color.parseColor("#000000"));
     }
 
     @Override

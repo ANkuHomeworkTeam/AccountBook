@@ -41,6 +41,8 @@ public class HomeFragment extends Fragment {
     List<Item> list;
     ImageView imageView_blank;
     TextView textView_blank;
+    TextView textView_expend;
+    TextView textView_income;
     private AccountInquiry inquiry;
 
     Calendar calendar = Calendar.getInstance();
@@ -58,30 +60,42 @@ public class HomeFragment extends Fragment {
         recyclerView=root.findViewById(R.id.record_recylerView);
         imageView_blank=root.findViewById(R.id.img_write);
         textView_blank=root.findViewById(R.id.tv_sentence);
-        java.text.SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        String begin_str="2020-6-17";
-        String end_str="2020-6-18";
+        textView_expend=root.findViewById(R.id.tv_expendnum);
+        textView_income=root.findViewById(R.id.tv_incomenum);
+        list=new ArrayList<Item>();
+        tv_month.setText(String.valueOf(year)+"-"+String.valueOf(month)+"-"+String.valueOf(day));
+        inquiry = new AccountInquiry(this.getActivity());
+
+
+        final java.text.SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        String begin_str=String.valueOf(year)+"-"+String.valueOf(month)+"-"+String.valueOf(day);
         Date begin=new Date();
-        Date end=new Date();
         try {
             begin=formatter.parse(begin_str);
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        try {
-            end=formatter.parse(end_str);
-        } catch (ParseException e) {
-            e.printStackTrace();
+        List<AccountItem> a_list=inquiry.inquiryBetweenDate(begin,begin);
+        for(int i=0;i<a_list.size();i++)
+        {
+            Item terr=new Item(a_list.get(i).getType(),a_list.get(i).isExpense(),String.valueOf(a_list.get(i).getMoney()));
+            list.add(terr);
         }
+        if(list.size()!=0)
+        {
+            imageView_blank.setVisibility(View.GONE);
+            textView_blank.setVisibility(View.GONE);
+            double sum_expend=inquiry.inquiryExpenseSumOnDate(begin);
+            double sum_import=inquiry.inquiryIncomeSumOnDate(begin);
+            textView_expend.setText(String.valueOf(sum_expend));
+            textView_income.setText(String.valueOf(sum_import));
+        }
+        context=getActivity();
+        LinearLayoutManager layoutManager= new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(layoutManager);
+        recordAdapter=new RecordAdapter(getContext(),list);
+        recyclerView.setAdapter(recordAdapter);
 
-        inquiry = new AccountInquiry(this.getActivity());
-        inquiry.insert(begin,300,true,"餐饮","xxx");
-
-        List<AccountItem> a_list=inquiry.inquiryBetweenDate(begin,end);
-
-        Log.e("sss",a_list.get(0).getInfo());
-        list=new ArrayList<Item>();
-        tv_month.setText(String.valueOf(year)+"-"+String.valueOf(month)+"-"+String.valueOf(day));
         btn_last.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -113,6 +127,44 @@ public class HomeFragment extends Fragment {
 
                 }
                 tv_month.setText(String.valueOf(year)+"-"+String.valueOf(month)+"-"+String.valueOf(day));
+
+                String date=String.valueOf(year)+"-"+String.valueOf(month)+"-"+String.valueOf(day);
+                list.clear();
+                Date begin=new Date();
+                try {
+                    begin=formatter.parse(date);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                List<AccountItem> a_list=inquiry.inquiryBetweenDate(begin,begin);
+
+
+                for(int i=0;i<a_list.size();i++)
+                {
+                    Item terr=new Item(a_list.get(i).getType(),a_list.get(i).isExpense(),String.valueOf(a_list.get(i).getMoney()));
+                    list.add(terr);
+                }
+                if(list.size()!=0)
+                {
+                    imageView_blank.setVisibility(View.GONE);
+                    textView_blank.setVisibility(View.GONE);
+
+                }
+                else
+                {
+                    imageView_blank.setVisibility(View.VISIBLE);
+                    textView_blank.setVisibility(View.VISIBLE);
+
+                }
+                double sum_expend=inquiry.inquiryExpenseSumOnDate(begin);
+                double sum_import=inquiry.inquiryIncomeSumOnDate(begin);
+                textView_expend.setText(String.valueOf(sum_expend));
+                textView_income.setText(String.valueOf(sum_import));
+                context=getActivity();
+                LinearLayoutManager layoutManager= new LinearLayoutManager(getContext());
+                recyclerView.setLayoutManager(layoutManager);
+                recordAdapter=new RecordAdapter(getContext(),list);
+                recyclerView.setAdapter(recordAdapter);
             }
         });
         btn_next.setOnClickListener(new View.OnClickListener() {
@@ -159,24 +211,46 @@ public class HomeFragment extends Fragment {
                     else
                         day=day+1;
                 }
+
                 tv_month.setText(String.valueOf(year)+"-"+String.valueOf(month)+"-"+String.valueOf(day));
+                String date=String.valueOf(year)+"-"+String.valueOf(month)+"-"+String.valueOf(day);
+                list.clear();
+                Date begin=new Date();
+                try {
+                    begin=formatter.parse(date);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                List<AccountItem> a_list=inquiry.inquiryBetweenDate(begin,begin);
+                for(int i=0;i<a_list.size();i++)
+                {
+                    Item terr=new Item(a_list.get(i).getType(),a_list.get(i).isExpense(),String.valueOf(a_list.get(i).getMoney()));
+                    list.add(terr);
+                }
+                if(list.size()!=0)
+                {
+                    imageView_blank.setVisibility(View.GONE);
+                    textView_blank.setVisibility(View.GONE);
+
+                }
+                else
+                {
+                    imageView_blank.setVisibility(View.VISIBLE);
+                    textView_blank.setVisibility(View.VISIBLE);
+                }
+                double sum_expend=inquiry.inquiryExpenseSumOnDate(begin);
+                double sum_import=inquiry.inquiryIncomeSumOnDate(begin);
+                textView_expend.setText(String.valueOf(sum_expend));
+                textView_income.setText(String.valueOf(sum_import));
+                context=getActivity();
+                LinearLayoutManager layoutManager= new LinearLayoutManager(getContext());
+                recyclerView.setLayoutManager(layoutManager);
+                recordAdapter=new RecordAdapter(getContext(),list);
+                recyclerView.setAdapter(recordAdapter);
             }
         });
 
-        Item terr1=new Item("餐饮",true,"300");
-        Item terr2=new Item("工作",false,"600");
-        list.add(terr1);
-        list.add(terr2);
-        if(list.size()!=0)
-        {
-            imageView_blank.setVisibility(View.GONE);
-            textView_blank.setVisibility(View.GONE);
-        }
-        context=getActivity();
-        LinearLayoutManager layoutManager= new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(layoutManager);
-        recordAdapter=new RecordAdapter(getContext(),list);
-        recyclerView.setAdapter(recordAdapter);
+
         return root;
     }
 
