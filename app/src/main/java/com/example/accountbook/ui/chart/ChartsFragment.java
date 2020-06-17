@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.accountbook.R;
 import com.example.accountbook.backend.AccountInquiry;
+import com.example.accountbook.backend.AccountItem;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -222,7 +223,7 @@ public class ChartsFragment extends Fragment {
             }
         });
 
-
+        // inquiry.insert(new Date(), 1000, true, AccountItem.TYPE_CONSUME, "gggg");
 
 
         // init data

@@ -28,7 +28,7 @@ public class AccountInquiry {
         Log.w(" - Inquiry", "delete");
     }
     // 返回所有
-    ArrayList<AccountItem> inquiryAll() {
+    public ArrayList<AccountItem> inquiryAll() {
         Log.w(" - Inquiry", "inquiry all");
         return db.inquiryItems(null, null);
     }
