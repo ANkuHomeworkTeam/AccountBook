@@ -105,7 +105,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="30dp"
                     android:singleLine="true"
-                    android:maxLength="5"
+                    android:maxLength="10"
                     android:textColorHint="#333333"
                     android:layout_centerVertical="true"
                     android:textSize="26dp"

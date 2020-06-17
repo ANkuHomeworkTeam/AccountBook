@@ -61,7 +61,7 @@ public class AccountInquiry {
     }
 
     public double inquiryExpenseSumBetweenDate(Date begin, Date end) {
-        return db.inquirySumBetweenDate(begin, end, true);
+        return db.inquirySumBetweenDate(begin, end, false);
     }
 
     public List<AccountItem> inquiryIncomeSumOnTypeBetweenDate(Date dateBegin, Date dateEnd) {

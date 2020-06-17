@@ -6,6 +6,7 @@ package com.example.accountbook.ui;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,8 +17,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.accountbook.MainActivity;
 import com.example.accountbook.R;
+import com.example.accountbook.backend.AccountInquiry;
+
+import java.util.Date;
 
 public class Calculate extends AppCompatActivity {
+    private AccountInquiry inquiry;
+
     Button btn_return;
     Button btn_expend;
     Button btn_income;
@@ -30,6 +36,12 @@ public class Calculate extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        /**
+         * added by hrl
+         */
+        inquiry = new AccountInquiry(this);
+
         setContentView(R.layout.activity_calculate);
         expend_or_income=true;
         btn_return=(Button)findViewById(R.id.btn_return);
@@ -106,6 +118,23 @@ public class Calculate extends AppCompatActivity {
         btn_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                /**
+                 * added by hrl
+                 */
+                String type = btn_none.getText().toString();
+                boolean isIncome = !expend_or_income;
+                Date date = new Date();
+                String moneyStr = edit_money_color.getText().toString();
+                if (moneyStr == null) {
+                    moneyStr = "0.0";
+                }
+                Double money = Double.valueOf(edit_money_color.getText().toString());
+                Log.d(" - Insert", isIncome? "收入" : "支出" + ", " + type + " " + moneyStr);
+                inquiry.insert(date, money, isIncome, type, "");
+
+                // 返回
+                Intent intent=new Intent(Calculate.this, MainActivity.class);
+                startActivity(intent);
 
             }
         });
