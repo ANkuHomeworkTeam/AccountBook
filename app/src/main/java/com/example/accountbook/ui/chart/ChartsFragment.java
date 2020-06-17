@@ -224,7 +224,7 @@ public class ChartsFragment extends Fragment {
         });
 
         // inquiry.insert(new Date(), 1000, true, AccountItem.TYPE_CONSUME, "gggg");
-
+        Log.e("test", Integer.toString(inquiry.inquiryAll().size()));
 
         // init data
         switchTo(CHART_ON_MONTH);
