@@ -1,12 +1,18 @@
 package com.example.accountbook;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.example.accountbook.ui.Calculate;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -15,10 +21,17 @@ import androidx.navigation.ui.NavigationUI;
 import com.example.accountbook.backend.AccountInquiry;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.Date;
+
+import java.sql.Date;
+import java.text.SimpleDateFormat;
+
 
 public class MainActivity extends AppCompatActivity {
+    Context context;
     FloatingActionButton add_btn;
+    Button next_month;
+    Button last_month;
+    TextView tv_month;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
           + by hrl 1711326
          */
         AccountInquiry accountInquiry = new AccountInquiry(MainActivity.this);
-
 
         setContentView(R.layout.activity_main);
         BottomNavigationView navView = findViewById(R.id.nav_view);
@@ -45,6 +57,18 @@ public class MainActivity extends AppCompatActivity {
          * by gw 1711324
          */
         add_btn=(FloatingActionButton)findViewById(R.id.floatingActionButton);
+        next_month=(Button)findViewById(R.id.btn_last);
+        last_month=(Button)findViewById(R.id.btn_next);
+
+
+
+
+
+        //获取当前时间
+        //SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
+        //Date date = new Date(System.currentTimeMillis());
+
+        //tv_month.setText("Date获取当前日期时间");
         add_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
