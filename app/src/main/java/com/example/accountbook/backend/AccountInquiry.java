@@ -41,7 +41,7 @@ public class AccountInquiry {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         String beginDateStr = format.format(begin);
         String endDateStr   = format.format(end);
-        return db.inquiryItems(db.KEY_DATE + ">? AND " + db.KEY_DATE + "<?",
+        return db.inquiryItems(db.KEY_DATE + ">=? AND " + db.KEY_DATE + "<=?",
                 new String[]{
                         beginDateStr,
                         endDateStr

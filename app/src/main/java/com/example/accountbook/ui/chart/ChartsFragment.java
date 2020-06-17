@@ -301,6 +301,9 @@ public class ChartsFragment extends Fragment {
             income += incomeMoney;
         }
         // 设置饼图
+        List<AccountItem> incomeWithType = inquiry.inquiryIncomeSumOnTypeBetweenDate(days[0], days[29]);
+        List<AccountItem> expenseWithType = inquiry.inquiryExpenseSumOnTypeBetweenDate(days[0], days[29]);
+        Log.e("fuck", incomeWithType.size() + "");
 
         axisX.setValues(axisXLabels);
         incomeLine.setValues(incomePoints);

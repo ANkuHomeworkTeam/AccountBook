@@ -157,7 +157,7 @@ public class AccountDataBase extends SQLiteOpenHelper {
         };
         Cursor c = db.query(TABLE_ACCOUNT_BOOK,
                 columns,
-                KEY_DATE + ">? AND " + KEY_DATE + "<? AND" + KEY_I_OR_E + "=?",
+                KEY_DATE + ">=? AND " + KEY_DATE + "<=? AND " + KEY_I_OR_E + "=?",
                 sectionArgs,
                 KEY_TYPE,
                 null,
