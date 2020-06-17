@@ -8,14 +8,14 @@
         android:id="@+id/home_page_R_1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#ffffff">
+        android:background="#f6f5f5">
 
 
         <RelativeLayout
             android:id="@+id/home_page_R_3"
             android:layout_width="match_parent"
             android:layout_height="70dp"
-            android:background="@drawable/frame">
+            android:background="@drawable/frame1">
 
             <Button
                 android:id="@+id/btn_last"
@@ -97,7 +97,7 @@
             android:background="@drawable/frame">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/id_recylerView"
+                android:id="@+id/record_recylerView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
