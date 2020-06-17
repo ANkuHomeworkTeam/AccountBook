@@ -16,6 +16,7 @@ import android.util.Log;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class AccountDataBase extends SQLiteOpenHelper {
     static final String DATABASE_NAME = "MyAccountDataBase";
@@ -119,4 +120,42 @@ public class AccountDataBase extends SQLiteOpenHelper {
         c.close();
         return lists;
     }
+
+    public double inquirySumOnDate(java.util.Date date, boolean isIncome) {
+        SQLiteDatabase db = getWritableDatabase();
+        String[] columns = new String[]{ "SUM(" + KEY_MONEY + ") as IncomeSum" };
+        String dateStr = new SimpleDateFormat("yyyy-MM-dd").format(date);
+        double money = 0;
+        Cursor c = db.query(TABLE_ACCOUNT_BOOK,
+                columns,
+                KEY_DATE+"=? AND "+KEY_I_OR_E+"=?",
+                new String[]{dateStr, isIncome ? "1" : "0"},
+                KEY_DATE,
+                null,
+                null);
+        while (c.moveToNext()) {
+            money = c.getDouble(c.getColumnIndex("IncomeSum"));
+            Log.e(" - DataBase ", "money is " + money);
+        }
+        c.close();
+        return money;
+    }
+
+    public double inquirySumOnType(java.util.Date dateBegin, java.util.Date dateEnd, boolean isIncome, String type) {
+        SQLiteDatabase db = getWritableDatabase();
+        String[] columns = new String[]{ "SUM(" + KEY_MONEY + ") as SumMoney" };
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String dateBeginStr = dateFormat.format(dateBegin);
+        String dateEndStr = dateFormat.format(dateEnd);
+        double money = 0;
+        Cursor c = db.query(TABLE_ACCOUNT_BOOK,
+                columns,
+                KEY_DATE + ">? AND " + KEY_DATE + "<? AND" + KEY_TYPE + "=?",
+                null,
+                null,
+                null,
+                null,
+                null);
+    }
+
 }

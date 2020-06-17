@@ -1,6 +1,7 @@
 package com.example.accountbook.ui.chart;
 
 import android.graphics.Color;
+import android.icu.text.SimpleDateFormat;
 import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.util.Log;
@@ -159,9 +160,12 @@ public class ChartsFragment extends Fragment {
         // configure chart
         // line chart
         final boolean lineChartHasLine = true;
+        final boolean lineChartHasPoint = false;
         final int     axisTextSize     = 12;
         final boolean hasSplitLineX = true;
         final boolean hasSplitLineY = true;
+        incomeLine.setHasPoints(lineChartHasPoint);
+        expenseLine.setHasPoints(lineChartHasPoint);
         incomeLine.setHasLines(lineChartHasLine);
         expenseLine.setHasLines(lineChartHasLine);
         incomeLine.setColor(LINE_CHART_INCOME_COLOR);
@@ -228,9 +232,12 @@ public class ChartsFragment extends Fragment {
         // init data
         switchTo(CHART_ON_MONTH);
 
+        // \
         return root;
     }
     private void switchTo(int status) {
+        expense = 0;
+        income = 0;
         buttonSwitchToMonth.setTextColor(statusInactiveColor);
         buttonSwitchToSeason.setTextColor(statusInactiveColor);
         buttonSwitchToYear.setTextColor(statusInactiveColor);
@@ -267,6 +274,11 @@ public class ChartsFragment extends Fragment {
     }
 
     private void switchToMonth() {
+        List<AxisValue> axisXLabels = new ArrayList<>();
+        List<PointValue> incomePoints = new ArrayList<>();
+        List<PointValue> expensePoints = new ArrayList<>();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd");
+
         // 求出最近30天
         Calendar today = Calendar.getInstance();
         Date[] days = new Date[30];
@@ -274,16 +286,25 @@ public class ChartsFragment extends Fragment {
             days[i] = today.getTime();
             today.add(Calendar.DATE, -1);
         }
-
-        List<AxisValue> axisXLabels = new ArrayList<>();
-        for(int i = 0; i< 5; i++) {
-            axisXLabels.add(new AxisValue(i).setLabel(Integer.toString(i)));
+        // 设置折线图
+        for (int i=0; i < 30; i++) {
+            AxisValue label = new AxisValue(i);
+            label.setLabel(dateFormat.format(days[i]));
+            axisXLabels.add(label);
+            double incomeMoney = inquiry.inquiryIncomeSumOnDate(days[i]);
+            double expenseMoney = inquiry.inquiryExpenseSumOnDate(days[i]);
+            PointValue incomePoint = new PointValue(i, (float)incomeMoney);
+            incomePoints.add(incomePoint);
+            PointValue expensePoint = new PointValue(i, (float)expenseMoney);
+            expensePoints.add(expensePoint);
+            expense += expenseMoney;
+            income += incomeMoney;
         }
-        axisX.setValues(axisXLabels);
-        List<PointValue> points = new ArrayList<>();
-        points.add(new PointValue(2, 24));
-        incomeLine.setValues(points);
+        // 设置饼图
 
+        axisX.setValues(axisXLabels);
+        incomeLine.setValues(incomePoints);
+        expenseLine.setValues(expensePoints);
     }
 
     private void switchToSeason() {

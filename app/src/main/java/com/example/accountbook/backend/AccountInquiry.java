@@ -32,5 +32,16 @@ public class AccountInquiry {
         Log.w(" - Inquiry", "inquiry all");
         return db.inquiryItems(null, null);
     }
+    public ArrayList<AccountItem> inquiryAll(String section, String[] sectionArgs) {
+        return db.inquiryItems(section, sectionArgs);
+    }
+
+    public double inquiryIncomeSumOnDate(Date date) {
+        return db.inquirySumOnDate(date, true);
+    }
+
+    public double inquiryExpenseSumOnDate(Date date) {
+        return db.inquirySumOnDate(date, false);
+    }
 
 }
