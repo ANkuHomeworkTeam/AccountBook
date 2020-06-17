@@ -27,11 +27,7 @@ import java.text.SimpleDateFormat;
 
 
 public class MainActivity extends AppCompatActivity {
-    Context context;
     FloatingActionButton add_btn;
-    Button next_month;
-    Button last_month;
-    TextView tv_month;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,13 +53,6 @@ public class MainActivity extends AppCompatActivity {
          * by gw 1711324
          */
         add_btn=(FloatingActionButton)findViewById(R.id.floatingActionButton);
-        next_month=(Button)findViewById(R.id.btn_last);
-        last_month=(Button)findViewById(R.id.btn_next);
-
-
-
-
-
         //获取当前时间
         //SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
         //Date date = new Date(System.currentTimeMillis());
