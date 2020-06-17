@@ -3,9 +3,14 @@ package com.example.accountbook.backend;
 import java.util.Date;
 
 public class AccountItem {
-    public static final String TYPE_TRANSFER = "转账";
-    public static final String TYPE_SALARY = "工资";
-    public static final String TYPE_CONSUME = "消费";
+    public static final String TYPE_CATERING = "餐饮";
+    public static final String TYPE_TRANSPORTATION = "交通";
+    public static final String TYPE_ENTERTAINMENT = "娱乐";
+    public static final String TYPE_CLOTHS = "服饰";
+    public static final String TYPE_FULL_TIME_JOB = "工作";
+    public static final String TYPE_PART_TIME_JOB = "兼职";
+    public static final String TYPE_FINANCIAL = "理财";
+    public static final String TYPE_CASHGIFT = "礼金";
     public static final String TYPE_OTHER = "其它";
 
     // id
