@@ -35,6 +35,10 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.MyViewHold
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+        if(position == list.size()) {
+            holder.itemView.setVisibility(View.GONE);
+            return ;
+        }
         final Item item=list.get(position);
         holder.textView_type.setText(item.getType());
         holder.textView_money.setText(item.getMoney());
@@ -47,7 +51,7 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.MyViewHold
 
     @Override
     public int getItemCount() {
-        return list.size();
+        return (list==null?0:(list.size()+1));
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder{

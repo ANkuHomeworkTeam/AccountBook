@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -125,17 +126,19 @@ public class Calculate extends AppCompatActivity {
                 boolean isIncome = !expend_or_income;
                 Date date = new Date();
                 String moneyStr = edit_money_color.getText().toString();
-                if (moneyStr == null) {
+                if (moneyStr.length()==0) {
                     moneyStr = "0.0";
+                    Toast.makeText(Calculate.this, "请输入合法数值", Toast.LENGTH_SHORT).show();
                 }
-                Double money = Double.valueOf(edit_money_color.getText().toString());
-                Log.d(" - Insert", isIncome? "收入" : "支出" + ", " + type + " " + moneyStr);
-                inquiry.insert(date, money, isIncome, type, "");
+                else {
+                    Double money = Double.valueOf(edit_money_color.getText().toString());
+                    Log.d(" - Insert", isIncome ? "收入" : "支出" + ", " + type + " " + moneyStr);
+                    inquiry.insert(date, money, isIncome, type, "");
 
-                // 返回
-                Intent intent=new Intent(Calculate.this, MainActivity.class);
-                startActivity(intent);
-
+                    // 返回
+                    Intent intent = new Intent(Calculate.this, MainActivity.class);
+                    startActivity(intent);
+                }
             }
         });
     }
